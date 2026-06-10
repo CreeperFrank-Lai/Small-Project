@@ -15,7 +15,7 @@ Pet::Pet(const string& name) :
 }
 
 void Pet::checkHealth() {
-    _isSick = (_hunger >= 85 || _cleanliness <= 20);
+    _isSick = (_hunger >= 75 && _cleanliness <= 20);
 }
 
 // 餵食需 5 金幣（飢餓-15，快樂+5）
@@ -65,9 +65,18 @@ bool Pet::seeDoctor() {
     }
     _coins -= 20;
     _isSick = false;
-    cout << " >> " << _name << " 康復了，恢復了健康！\n";
+
+    // ✅ 自動回復到良好狀態
+    _hunger = 50;       // 飢餓回到中等，不會太餓
+    _cleanliness = 70;  // 清潔回到良好
+    _happiness = 70;    // 快樂回到良好
+
+    cout << " >> " << _name << " 康復了，並恢復到良好狀態！\n";
+    showStatus();
     return true;
 }
+
+
 
 // 每小時變化（飢餓+5，快樂-3，清潔-3）
 void Pet::timePass(int hours) {
